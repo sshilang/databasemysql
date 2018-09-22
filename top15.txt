@@ -1,0 +1,11 @@
+SELECT
+	distr_name,
+	sub_distr_name,
+	xiaoqu_name,
+	price_num,
+	price_unit 
+FROM
+	whfybeike_copy 
+ORDER BY
+	price_num DESC 
+	LIMIT 15
