@@ -1,0 +1,9 @@
+UPDATE whdistricts 
+SET aver_unit_price = (
+	SELECT
+		a.prices/distr_num 
+	FROM
+		( SELECT distr_name, SUM(unit_price) AS prices FROM whfybeike_copy GROUP BY distr_name ) AS a 
+	WHERE
+	a.distr_name = whdistricts.distr_name 
+	)
