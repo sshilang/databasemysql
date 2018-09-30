@@ -1,0 +1,17 @@
+CREATE DEFINER=`root`@`%` FUNCTION `fsp_str`(p_str VARCHAR(50)CHARSET utf8,/*原始字符串*/p_begin_str VARCHAR(50)CHARSET utf8,/*要匹配的起始字符串*/p_end_str VARCHAR(50)CHARSET utf8) RETURNS varchar(50) CHARSET utf8
+    DETERMINISTIC
+BEGIN
+	DECLARE m_len INT DEFAULT 0;
+	DECLARE m_index INT DEFAULT 0;
+	DECLARE p_result VARCHAR(50) DEFAULT '';
+/*计算第一个匹配字符串的索引位置*/
+	SELECT
+		locate( p_begin_str, p_str ) + char_length( p_begin_str ) INTO m_index;
+/*计算第一个匹配字符串的长度*/
+	SELECT
+		locate( p_end_str, p_str, m_index ) INTO m_len;
+	SELECT
+		SUBSTRING( p_str, m_index, m_len - m_index ) INTO p_result;
+	RETURN p_result;
+	
+END
