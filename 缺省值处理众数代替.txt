@@ -1,0 +1,26 @@
+#SELECT Num_char_extract(building_info,0) from whfybk
+#UPDATE whfybk SET floor_num=fsp_str (building_info, '共', '层');
+#SELECT * FROM whfybk WHERE has_lift='None' AND floor_num>7;
+#UPDATE whfybk SET floor_info='高' WHERE building_info LIKE'%高楼层%';
+#UPDATE whfybk SET floor_info='中' WHERE building_info LIKE'%中楼层%';
+#UPDATE whfybk SET floor_info='低' WHERE building_info LIKE'%低楼层%';
+#select floor_info, count(*) from whfybk GROUP BY floor_info;
+#UPDATE whfybk SET floor_info='低' WHERE floor_num<4;
+#(select floor_info,count(*) num from (SELECT * from whfybk where floor_num<11)as a GROUP BY floor_info)as b;
+UPDATE whfybk 
+SET floor_info = (
+	SELECT
+		floor_info 
+	FROM
+		( SELECT floor_info, count( * ) num FROM ( SELECT * FROM whfybk WHERE floor_num = 3 ) AS a GROUP BY floor_info ) AS b 
+	GROUP BY
+		floor_info 
+	ORDER BY
+		num DESC 
+		LIMIT 1 
+	) 
+WHERE
+	floor_num = 3
+	AND floor_info is null;
+	#select * from whfybk where floor_info is null;
+	
